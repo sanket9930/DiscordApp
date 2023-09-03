@@ -7,8 +7,6 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds, GatewayIntentBits.GuildMessages, GatewayIntentBits.MessageContent],
 });
 
-console
-
 const BOT_TOKEN = process.env.BOT_TOKEN; 
 const PREFIX = '/pp';
 
@@ -47,9 +45,8 @@ client.on('messageCreate', async (message) => {
     // Login user
     if (command === 'login') {
       const email = args[1], password = args[3];
-      console.log(email, password);
 
-      // Call your API to create a new user
+      // Call your API to Login user
       try {
         const response = await axios.post('http://localhost:3000/api/user/login', {
           email,
@@ -59,12 +56,12 @@ client.on('messageCreate', async (message) => {
         if (response.status === 200) {
           message.channel.send(`Logged In as ${response.data.username}.`);
           store('Profile', {token: response.data.token}); // saving the token
-        } else {
-          message.channel.send('Failed to create user.');
+        } 
+        else {
+          message.channel.send('Failed to Login');
         }
       } catch (error) {
-        message.reply({content: error.message})
-        message.channel.send("Error creating User");
+        message.channel.send("Incorrect Username or Password");
       }
     }
 
@@ -108,7 +105,6 @@ client.on('messageCreate', async (message) => {
         message.channel.send('Please find your information')
         message.channel.send('```json\n' + userData + '\n```');
       } catch (error) {
-        console.log("here");
         console.log(error)
       }
     }
